@@ -1,12 +1,12 @@
 // ============================================================
 // HIPG HAMBANTOTA INTERNATIONAL PORT - REGIONAL COASTAL DIGITAL TWIN
 // Exact 1:1 Geographical Reconstruction Matching Google Satellite Map:
-// 1. Central Ro-Ro & Container Yard nestled in the inland harbor
-// 2. North Basin & East Turning Basin encircling the yard
-// 3. Karagan Lewaya Diagonal Dyke (North-East bund)
+// 1. Vast Sri Lankan Mainland covering entire North, West & East
+// 2. Inner Harbor Basin carved into the land around Central Yard
+// 3. Karagan Lewaya diagonal rock dyke (North-East bund)
 // 4. South Coastal Mainland (Gate 1, CGHW Highway, Mirijjawila)
-// 5. Mirijjawila Crescent Beach & Iconic Curved South Breakwater (with Starboard Green Lighthouse)
-// 6. East Headland & Hambanthota Harbour Breakwater (with Port Red Lighthouse)
+// 5. Mirijjawila Bean-Shaped Breakwater Island & Hook (Starboard Green Lighthouse)
+// 6. East Headland & Hambanthota Harbour Breakwater (Port Red Lighthouse)
 // 7. Southern Deep-Water Entrance Channel flanked by both breakwaters
 // 8. Rotala Wewa Wetland Lake & Southern Expressway Corridor Westward
 // ============================================================
@@ -252,219 +252,50 @@ export function RealisticHambantotaEnvironment() {
   return (
     <group name="Hambantota_Satellite_Environment">
       {/* ─────────────────────────────────────────────────────────────
-          1. SOUTH MAINLAND (Directly below Yard: Gate 1, CGHW Hwy, Mirijjawila)
-          Spanning z: 920 to 1600, x: -400 to 958
+          1. NORTH MAINLAND (Covering the entire upper horizon)
+          Spans z: 240 north to -2200, x: -2200 to 2800
           ───────────────────────────────────────────────────────────── */}
-      <group name="South_Coastal_Mainland">
-        {/* Main South Coastal Plains Landmass */}
+      <group name="North_Mainland_Continent">
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[worldX(279), 0.022, worldZ(1260)]}
+          position={[worldX(300), 0.02, worldZ(-980)]}
           receiveShadow
         >
-          <planeGeometry args={[worldW(1358), worldD(680)]} />
+          <planeGeometry args={[worldW(5000), worldD(2440)]} />
           <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
         </mesh>
 
-        {/* CGHW Highway (Colombo - Galle - Hambantota - Wellawaya Highway) */}
-        {/* Running across south mainland towards Mirijjawila Beach */}
-        <mesh
-          position={[worldX(260), 0.038, worldZ(1420)]}
-          rotation={[0, -0.06, 0]}
-          receiveShadow
-        >
-          <boxGeometry args={[worldW(1300), 0.03, worldD(22)]} />
-          <meshStandardMaterial map={asphaltTex} roughness={0.7} metalness={0.2} />
-        </mesh>
-
-        {/* Gate 01 Roundabout & Access Feeder Road */}
-        <group position={[worldX(280), 0.036, worldZ(1050)]}>
-          {/* Roundabout Asphalt Ring */}
-          <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-            <ringGeometry args={[worldW(14), worldW(32), 32]} />
-            <meshStandardMaterial map={asphaltTex} roughness={0.7} />
-          </mesh>
-          {/* Central Landscaped Garden Island */}
-          <mesh rotation={[-Math.PI / 2, 0, 0]}>
-            <circleGeometry args={[worldW(13.8), 24]} />
-            <meshStandardMaterial color="#1b4d24" roughness={0.9} />
-          </mesh>
-          {/* Gate 1 Access Road connecting Roundabout to Yard Gate 01 */}
-          <mesh position={[-worldW(50), 0, -worldD(60)]} rotation={[0, 0.45, 0]} receiveShadow>
-            <boxGeometry args={[worldW(20), 0.02, worldD(120)]} />
-            <meshStandardMaterial map={asphaltTex} />
-          </mesh>
-        </group>
-
-        {/* Mirijjawila Crescent Sandy Beach (Along z: 1560 to 1640) */}
+        {/* North Quay Concrete Apron (Berths 09-11 running along z: 240, x: 180 to 1100) */}
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[worldX(450), 0.025, worldZ(1590)]}
+          position={[worldX(640), 0.038, worldZ(225)]}
           receiveShadow
         >
-          <planeGeometry args={[worldW(700), worldD(100)]} />
-          <meshStandardMaterial map={sandTex} roughness={0.85} />
+          <planeGeometry args={[worldW(920), worldD(30)]} />
+          <meshStandardMaterial map={concreteTex} roughness={0.7} />
         </mesh>
 
-        {/* Surf Foam Breaking on Mirijjawila Beach */}
-        <BreakingSurfFoam
-          position={[worldX(450), 0.028, worldZ(1640)]}
-          width={worldW(700)}
-          depth={2.8}
-        />
-      </group>
-
-      {/* ─────────────────────────────────────────────────────────────
-          2. ICONIC CURVED SOUTH-WEST BREAKWATER (Mirijjawila Hook)
-          Sweeping in a large arc from (worldX(750), worldZ(1580))
-          down to (worldX(1020), worldZ(1820)) into the Indian Ocean
-          ───────────────────────────────────────────────────────────── */}
-      <group name="Mirijjawila_Curved_South_Breakwater">
-        {/* Curved Rock Armor Breakwater Segments */}
-        {[
-          { x: 730, z: 1610, rot: 0.12, len: 140, w: 55 },
-          { x: 790, z: 1680, rot: 0.55, len: 150, w: 58 },
-          { x: 860, z: 1740, rot: 0.92, len: 150, w: 60 },
-          { x: 940, z: 1785, rot: 1.25, len: 160, w: 62 },
-          { x: 1020, z: 1810, rot: 1.57, len: 170, w: 65 },
-        ].map((seg, si) => (
-          <group key={`c-break-${si}`} position={[worldX(seg.x), 0.32, worldZ(seg.z)]} rotation={[0, seg.rot, 0]}>
-            {/* Heavy Riprap Granite Armor Stone Spine */}
-            <mesh castShadow receiveShadow>
-              <boxGeometry args={[worldW(seg.w), 1.0, worldD(seg.len)]} />
-              <meshStandardMaterial map={rockTex} roughness={0.85} />
-            </mesh>
-            {/* Concrete Maintenance Crown Road */}
-            <mesh position={[0, 0.55, 0]} receiveShadow>
-              <boxGeometry args={[worldW(seg.w * 0.42), 0.14, worldD(seg.len)]} />
-              <meshStandardMaterial map={concreteTex} roughness={0.7} />
-            </mesh>
-          </group>
-        ))}
-
-        {/* Breakwater Head (Round Promontory at tip) */}
-        <mesh position={[worldX(1100), 0.35, worldZ(1810)]} castShadow receiveShadow>
-          <cylinderGeometry args={[2.8, 3.8, 1.2, 16]} />
-          <meshStandardMaterial map={rockTex} roughness={0.85} />
-        </mesh>
-
-        {/* STARBOARD LIGHTHOUSE (Green Flashing Beacon on South Breakwater Head) */}
-        <BreakwaterLighthouse
-          position={[worldX(1100), 0.95, worldZ(1810)]}
-          beaconColor="#22c55e"
-          flashSpeed={2.8}
-          name="South_Breakwater_Starboard_Lighthouse"
-        />
-      </group>
-
-      {/* ─────────────────────────────────────────────────────────────
-          3. EAST HEADLAND & HAMBANTHOTA HARBOUR BREAKWATER
-          East of the entrance channel (x: 1282 to 2200, z: 480 to 1650)
-          ───────────────────────────────────────────────────────────── */}
-      <group name="East_Headland_Hambanthota">
-        {/* East Mainland Promontory */}
+        {/* West Container/RoRo Yard Extension (Vertical strip extending North on top-left) */}
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[worldX(1741), 0.022, worldZ(1050)]}
+          position={[worldX(220), 0.038, worldZ(-40)]}
           receiveShadow
         >
-          <planeGeometry args={[worldW(918), worldD(1200)]} />
-          <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
+          <planeGeometry args={[worldW(80), worldD(500)]} />
+          <meshStandardMaterial map={asphaltTex} roughness={0.75} />
         </mesh>
 
-        {/* Tangalle - Hambantota Coastal Road */}
-        <mesh
-          position={[worldX(1550), 0.038, worldZ(1050)]}
-          rotation={[0, 0.22, 0]}
-          receiveShadow
-        >
-          <boxGeometry args={[worldW(20), 0.03, worldD(1100)]} />
-          <meshStandardMaterial map={asphaltTex} roughness={0.7} />
-        </mesh>
-
-        {/* East Breakwater (Hook-shaped rock arm guarding channel entrance) */}
-        <group name="East_Harbour_Breakwater">
-          <mesh
-            position={[worldX(1240), 0.35, worldZ(1620)]}
-            rotation={[0, -0.42, 0]}
-            castShadow
-            receiveShadow
-          >
-            <boxGeometry args={[worldW(58), 1.0, worldD(280)]} />
-            <meshStandardMaterial map={rockTex} roughness={0.85} />
-          </mesh>
-
-          {/* East Breakwater Head */}
-          <mesh position={[worldX(1180), 0.35, worldZ(1720)]} castShadow receiveShadow>
-            <cylinderGeometry args={[2.5, 3.4, 1.2, 16]} />
-            <meshStandardMaterial map={rockTex} roughness={0.85} />
-          </mesh>
-
-          {/* PORT LIGHTHOUSE (Red Flashing Beacon on East Breakwater Head) */}
-          <BreakwaterLighthouse
-            position={[worldX(1180), 0.95, worldZ(1720)]}
-            beaconColor="#ef4444"
-            flashSpeed={2.8}
-            name="East_Breakwater_Port_Lighthouse"
-          />
-        </group>
-      </group>
-
-      {/* ─────────────────────────────────────────────────────────────
-          4. KARAGAN LEWAYA DIAGONAL DYKE & LAGOON (North-East Bund)
-          Cutting diagonally from (1140, 250) down to (1380, 480)
-          ───────────────────────────────────────────────────────────── */}
-      <group name="Karagan_Lewaya_Bund">
-        {/* Diagonal Rock Armor Embankment */}
-        <mesh
-          position={[worldX(1260), 0.45, worldZ(365)]}
-          rotation={[0, -0.785, 0]}
-          castShadow
-          receiveShadow
-        >
-          <boxGeometry args={[worldW(36), 1.2, worldD(340)]} />
-          <meshStandardMaterial map={rockTex} roughness={0.8} />
-        </mesh>
-        {/* Crown Patrol Road on Dyke */}
-        <mesh
-          position={[worldX(1260), 1.06, worldZ(365)]}
-          rotation={[0, -0.785, 0]}
-          receiveShadow
-        >
-          <boxGeometry args={[worldW(16), 0.08, worldD(336)]} />
-          <meshStandardMaterial map={asphaltTex} />
-        </mesh>
-      </group>
-
-      {/* ─────────────────────────────────────────────────────────────
-          5. NORTH MAINLAND & BY4 MARITIME OPERATIONS HILL
-          North of North Basin (z < 255)
-          ───────────────────────────────────────────────────────────── */}
-      <group name="North_Mainland_Hinterland">
-        {/* Expansive North Hinterland Landmass */}
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[worldX(500), 0.022, worldZ(-450)]}
-          receiveShadow
-        >
-          <planeGeometry args={[worldW(1900), worldD(1400)]} />
-          <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
-        </mesh>
-
-        {/* BY4 Administration Promontory Hill */}
+        {/* BY4 Administration Promontory Hill & HQ */}
         <group position={[worldX(760), 0, worldZ(80)]}>
           <mesh position={[0, 0.9, 0]} castShadow receiveShadow>
             <cylinderGeometry args={[worldW(160), worldW(240), 1.8, 16]} />
             <meshStandardMaterial map={terrainTex} roughness={0.85} />
           </mesh>
-
-          {/* HIPG Port Headquarters Complex */}
           <mesh position={[0, 1.8, 0]} castShadow receiveShadow>
             <boxGeometry args={[worldW(85), 0.75, worldD(65)]} />
             <meshStandardMaterial color="#f8fafc" roughness={0.25} metalness={0.1} />
           </mesh>
-
-          {/* VTMS Marine Radar Tower with Aviation Beacon */}
+          {/* VTMS Radar Tower with Red Aviation Beacon */}
           <group position={[worldW(55), 1.8, -worldD(20)]}>
             <mesh position={[0, 2.2, 0]}>
               <cylinderGeometry args={[0.08, 0.35, 4.4, 4]} />
@@ -474,44 +305,33 @@ export function RealisticHambantotaEnvironment() {
               <cylinderGeometry args={[0.45, 0.45, 0.08, 8]} />
               <meshStandardMaterial color="#0f172a" />
             </mesh>
-            <mesh position={[0, 4.6, 0]}>
-              <boxGeometry args={[0.9, 0.14, 0.06]} />
-              <meshStandardMaterial color="#ffffff" />
-            </mesh>
             <mesh position={[0, 4.8, 0]}>
               <sphereGeometry args={[0.08, 8, 8]} />
               <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={2.5} />
             </mesh>
             <pointLight position={[0, 4.8, 0]} color="#ef4444" distance={15} decay={2} />
           </group>
-
-          {/* Marine Bunker Terminal Oil Storage Tanks */}
+          {/* Oil Storage Tanks */}
           {[-worldW(70), -worldW(110)].map((tx, ti) => (
-            <group key={`oil-tank-${ti}`} position={[tx, 0.9, worldD(20)]}>
-              <mesh position={[0, 0.9, 0]} castShadow>
-                <cylinderGeometry args={[1.6, 1.6, 1.8, 24]} />
-                <meshStandardMaterial color="#f1f5f9" roughness={0.4} metalness={0.3} />
-              </mesh>
-              <mesh position={[0, 0.15, 0]}>
-                <boxGeometry args={[3.8, 0.3, 3.8]} />
-                <meshStandardMaterial color="#475569" roughness={0.8} />
-              </mesh>
-            </group>
+            <mesh key={`tank-${ti}`} position={[tx, 1.8, worldD(20)]} castShadow>
+              <cylinderGeometry args={[1.6, 1.6, 1.8, 20]} />
+              <meshStandardMaterial color="#f1f5f9" roughness={0.4} metalness={0.3} />
+            </mesh>
           ))}
         </group>
       </group>
 
       {/* ─────────────────────────────────────────────────────────────
-          6. WEST MAINLAND & ROTALA WEWA LAKE
-          Extending West (x: -1600 to 30, z: 0 to 1600)
+          2. WEST MAINLAND (Covering the entire left horizon)
+          Spans x: 260 west to -2200, z: 240 to 1680
           ───────────────────────────────────────────────────────────── */}
       <group name="West_Mainland_Plains">
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[worldX(-785), 0.022, worldZ(700)]}
+          position={[worldX(-970), 0.02, worldZ(960)]}
           receiveShadow
         >
-          <planeGeometry args={[worldW(1630), worldD(1800)]} />
+          <planeGeometry args={[worldW(2460), worldD(1440)]} />
           <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
         </mesh>
 
@@ -525,41 +345,253 @@ export function RealisticHambantotaEnvironment() {
           <meshStandardMaterial color="#94a3b8" roughness={0.5} />
         </mesh>
 
-        {/* Western Port Security Boundary Wall */}
-        <mesh position={[worldX(25), 0.5, worldZ(480)]} castShadow>
-          <boxGeometry args={[0.25, 0.95, worldD(920)]} />
+        {/* West Port Security Boundary Wall */}
+        <mesh position={[worldX(25), 0.5, worldZ(680)]} castShadow>
+          <boxGeometry args={[0.25, 0.95, worldD(520)]} />
           <meshStandardMaterial map={concreteTex} roughness={0.8} />
         </mesh>
       </group>
 
       {/* ─────────────────────────────────────────────────────────────
-          7. HARBOR ENTRANCE FAIRWAY NAVIGATION BUOYS
-          Bobbing in the deep channel mouth outside the breakwaters
+          3. SOUTH MAINLAND (Directly below Yard: Gate 1, CGHW Hwy, Mirijjawila)
+          Spanning z: 920 to 1640, x: -400 to 1020
           ───────────────────────────────────────────────────────────── */}
-      <group name="Channel_Navigation_Buoys">
-        <ChannelBuoy position={[worldX(1060), 0.05, worldZ(1920)]} color="#22c55e" flashSpeed={2.2} />
-        <ChannelBuoy position={[worldX(1080), 0.05, worldZ(1620)]} color="#22c55e" flashSpeed={2.2} />
-        <ChannelBuoy position={[worldX(1160), 0.05, worldZ(1920)]} color="#ef4444" flashSpeed={2.2} />
-        <ChannelBuoy position={[worldX(1140), 0.05, worldZ(1620)]} color="#ef4444" flashSpeed={2.2} />
+      <group name="South_Coastal_Mainland">
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[worldX(310), 0.022, worldZ(1280)]}
+          receiveShadow
+        >
+          <planeGeometry args={[worldW(1420), worldD(720)]} />
+          <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
+        </mesh>
+
+        {/* CGHW Highway (Colombo - Galle - Hambantota - Wellawaya Highway) */}
+        <mesh
+          position={[worldX(260), 0.038, worldZ(1420)]}
+          rotation={[0, -0.06, 0]}
+          receiveShadow
+        >
+          <boxGeometry args={[worldW(1300), 0.03, worldD(22)]} />
+          <meshStandardMaterial map={asphaltTex} roughness={0.7} metalness={0.2} />
+        </mesh>
+
+        {/* Gate 01 Roundabout & Access Roads */}
+        <group position={[worldX(280), 0.036, worldZ(1050)]}>
+          <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+            <ringGeometry args={[worldW(14), worldW(32), 32]} />
+            <meshStandardMaterial map={asphaltTex} roughness={0.7} />
+          </mesh>
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <circleGeometry args={[worldW(13.8), 24]} />
+            <meshStandardMaterial color="#1b4d24" roughness={0.9} />
+          </mesh>
+          <mesh position={[-worldW(50), 0, -worldD(60)]} rotation={[0, 0.45, 0]} receiveShadow>
+            <boxGeometry args={[worldW(20), 0.02, worldD(120)]} />
+            <meshStandardMaterial map={asphaltTex} />
+          </mesh>
+        </group>
+
+        {/* Western Straight Beach Coastline (Facing Indian Ocean along z: 1640 - 1700) */}
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[worldX(-200), 0.024, worldZ(1670)]}
+          receiveShadow
+        >
+          <planeGeometry args={[worldW(1600), worldD(60)]} />
+          <meshStandardMaterial map={sandTex} roughness={0.85} />
+        </mesh>
+
+        {/* Breaking Surf Foam along Western Beach */}
+        <BreakingSurfFoam
+          position={[worldX(-200), 0.028, worldZ(1700)]}
+          width={worldW(1600)}
+          depth={2.6}
+        />
       </group>
 
       {/* ─────────────────────────────────────────────────────────────
-          8. TROPICAL PALM TREES & DRY-ZONE NATURE
+          4. MIRIJJAWILA BEAN-SHAPED BREAKWATER ISLAND & HOOK
+          Located at x: 650 to 1350, z: 1680 to 1920
+          Matches the distinctive island peninsula in Google Satellite Map
+          ───────────────────────────────────────────────────────────── */}
+      <group name="Mirijjawila_Breakwater_Island">
+        {/* Elongated Bean-Shaped Island Core (Sandy Scrub Interior) */}
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[worldX(880), 0.08, worldZ(1760)]}
+          receiveShadow
+        >
+          <cylinderGeometry args={[worldW(160), worldW(190), 0.35, 24]} />
+          <meshStandardMaterial map={terrainTex} roughness={0.85} />
+        </mesh>
+
+        {/* Seaward Curved Rock Armor Seawall (Sweeping around southern arc) */}
+        {[
+          { x: 680, z: 1720, rot: -0.55, len: 140, w: 42 },
+          { x: 750, z: 1800, rot: -0.15, len: 150, w: 45 },
+          { x: 840, z: 1850, rot: 0.25, len: 160, w: 48 },
+          { x: 950, z: 1870, rot: 0.65, len: 160, w: 50 },
+          { x: 1060, z: 1850, rot: 1.15, len: 150, w: 50 },
+        ].map((seg, si) => (
+          <group key={`island-seawall-${si}`} position={[worldX(seg.x), 0.32, worldZ(seg.z)]} rotation={[0, seg.rot, 0]}>
+            <mesh castShadow receiveShadow>
+              <boxGeometry args={[worldW(seg.w), 1.0, worldD(seg.len)]} />
+              <meshStandardMaterial map={rockTex} roughness={0.85} />
+            </mesh>
+            <mesh position={[0, 0.55, 0]} receiveShadow>
+              <boxGeometry args={[worldW(seg.w * 0.4), 0.12, worldD(seg.len)]} />
+              <meshStandardMaterial map={concreteTex} roughness={0.7} />
+            </mesh>
+          </group>
+        ))}
+
+        {/* Straight Eastward Breakwater Extension Arm */}
+        <group position={[worldX(1180), 0.32, worldZ(1820)]} rotation={[0, 1.45, 0]}>
+          <mesh castShadow receiveShadow>
+            <boxGeometry args={[worldW(48), 1.0, worldD(220)]} />
+            <meshStandardMaterial map={rockTex} roughness={0.85} />
+          </mesh>
+          <mesh position={[0, 0.55, 0]} receiveShadow>
+            <boxGeometry args={[worldW(22), 0.12, worldD(220)]} />
+            <meshStandardMaterial map={concreteTex} roughness={0.7} />
+          </mesh>
+        </group>
+
+        {/* Breakwater Head (Seaward Tip) */}
+        <mesh position={[worldX(1280), 0.35, worldZ(1800)]} castShadow receiveShadow>
+          <cylinderGeometry args={[2.8, 3.8, 1.2, 16]} />
+          <meshStandardMaterial map={rockTex} roughness={0.85} />
+        </mesh>
+
+        {/* STARBOARD LIGHTHOUSE (Green Flashing Beacon on South Breakwater Head) */}
+        <BreakwaterLighthouse
+          position={[worldX(1280), 0.95, worldZ(1800)]}
+          beaconColor="#22c55e"
+          flashSpeed={2.8}
+          name="South_Breakwater_Starboard_Lighthouse"
+        />
+      </group>
+
+      {/* ─────────────────────────────────────────────────────────────
+          5. EAST HEADLAND & HAMBANTHOTA TOWN PROMONTORY
+          Spans x: 1550 east to 2800, z: 550 to 1650
+          ───────────────────────────────────────────────────────────── */}
+      <group name="East_Headland_Hambanthota">
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[worldX(2175), 0.02, worldZ(1100)]}
+          receiveShadow
+        >
+          <planeGeometry args={[worldW(1250), worldD(1100)]} />
+          <meshStandardMaterial map={terrainTex} roughness={0.9} metalness={0.05} />
+        </mesh>
+
+        {/* Tangalle - Hambantota Coastal Highway */}
+        <mesh
+          position={[worldX(1850), 0.038, worldZ(1100)]}
+          rotation={[0, 0.24, 0]}
+          receiveShadow
+        >
+          <boxGeometry args={[worldW(20), 0.03, worldD(1000)]} />
+          <meshStandardMaterial map={asphaltTex} roughness={0.7} />
+        </mesh>
+
+        {/* East Breakwater (Hook-shaped rock mole guarding entrance from East) */}
+        <group name="East_Harbour_Breakwater">
+          <mesh
+            position={[worldX(1520), 0.35, worldZ(1620)]}
+            rotation={[0, -0.45, 0]}
+            castShadow
+            receiveShadow
+          >
+            <boxGeometry args={[worldW(55), 1.0, worldD(260)]} />
+            <meshStandardMaterial map={rockTex} roughness={0.85} />
+          </mesh>
+
+          {/* East Breakwater Head */}
+          <mesh position={[worldX(1420), 0.35, worldZ(1720)]} castShadow receiveShadow>
+            <cylinderGeometry args={[2.5, 3.4, 1.2, 16]} />
+            <meshStandardMaterial map={rockTex} roughness={0.85} />
+          </mesh>
+
+          {/* PORT LIGHTHOUSE (Red Flashing Beacon on East Breakwater Head) */}
+          <BreakwaterLighthouse
+            position={[worldX(1420), 0.95, worldZ(1720)]}
+            beaconColor="#ef4444"
+            flashSpeed={2.8}
+            name="East_Breakwater_Port_Lighthouse"
+          />
+        </group>
+
+        {/* Eastern Straight Coastline & Sandy Beaches */}
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[worldX(2150), 0.024, worldZ(1600)]}
+          receiveShadow
+        >
+          <planeGeometry args={[worldW(1200), worldD(50)]} />
+          <meshStandardMaterial map={sandTex} roughness={0.85} />
+        </mesh>
+        <BreakingSurfFoam
+          position={[worldX(2150), 0.028, worldZ(1625)]}
+          width={worldW(1200)}
+          depth={2.5}
+        />
+      </group>
+
+      {/* ─────────────────────────────────────────────────────────────
+          6. KARAGAN LEWAYA DIAGONAL DYKE (North-East Bund)
+          Cutting diagonally from (1140, 240) down to (1620, 620)
+          ───────────────────────────────────────────────────────────── */}
+      <group name="Karagan_Lewaya_Bund">
+        <mesh
+          position={[worldX(1380), 0.45, worldZ(430)]}
+          rotation={[0, -0.68, 0]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[worldW(36), 1.2, worldD(420)]} />
+          <meshStandardMaterial map={rockTex} roughness={0.8} />
+        </mesh>
+        <mesh
+          position={[worldX(1380), 1.06, worldZ(430)]}
+          rotation={[0, -0.68, 0]}
+          receiveShadow
+        >
+          <boxGeometry args={[worldW(16), 0.08, worldD(416)]} />
+          <meshStandardMaterial map={asphaltTex} />
+        </mesh>
+      </group>
+
+      {/* ─────────────────────────────────────────────────────────────
+          7. HARBOR ENTRANCE FAIRWAY NAVIGATION BUOYS
+          Deep-water channel entrance between the two breakwaters
+          ───────────────────────────────────────────────────────────── */}
+      <group name="Channel_Navigation_Buoys">
+        <ChannelBuoy position={[worldX(1320), 0.05, worldZ(1920)]} color="#22c55e" flashSpeed={2.2} />
+        <ChannelBuoy position={[worldX(1310), 0.05, worldZ(1680)]} color="#22c55e" flashSpeed={2.2} />
+        <ChannelBuoy position={[worldX(1420), 0.05, worldZ(1920)]} color="#ef4444" flashSpeed={2.2} />
+        <ChannelBuoy position={[worldX(1390), 0.05, worldZ(1680)]} color="#ef4444" flashSpeed={2.2} />
+      </group>
+
+      {/* ─────────────────────────────────────────────────────────────
+          8. TROPICAL PALM TREES & COASTAL FLORA
           ───────────────────────────────────────────────────────────── */}
       <group name="Regional_Vegetation">
         {/* Mirijjawila Beach Palms */}
-        <CoastalPalmTreeCluster x={280} z={1570} count={7} />
-        <CoastalPalmTreeCluster x={480} z={1560} count={9} />
-        <CoastalPalmTreeCluster x={680} z={1570} count={8} />
+        <CoastalPalmTreeCluster x={280} z={1620} count={8} />
+        <CoastalPalmTreeCluster x={480} z={1610} count={9} />
+        <CoastalPalmTreeCluster x={-120} z={1630} count={8} />
 
-        {/* South Land Scrub Clusters */}
-        <CoastalPalmTreeCluster x={120} z={1250} count={6} />
-        <CoastalPalmTreeCluster x={360} z={1320} count={7} />
-        <CoastalPalmTreeCluster x={650} z={1280} count={6} />
+        {/* South Land Settlements */}
+        <CoastalPalmTreeCluster x={120} z={1250} count={7} />
+        <CoastalPalmTreeCluster x={460} z={1320} count={8} />
+        <CoastalPalmTreeCluster x={650} z={1280} count={7} />
 
-        {/* East Headland Palms */}
-        <CoastalPalmTreeCluster x={1450} z={1480} count={8} />
-        <CoastalPalmTreeCluster x={1680} z={1350} count={9} />
+        {/* East Headland Village Palms */}
+        <CoastalPalmTreeCluster x={1650} z={1380} count={9} />
+        <CoastalPalmTreeCluster x={1920} z={1250} count={10} />
 
         {/* North BY4 Hill Palms */}
         <CoastalPalmTreeCluster x={680} z={70} count={6} />
