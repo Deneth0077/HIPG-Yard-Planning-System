@@ -1,11 +1,12 @@
 // ============================================================
-// HIPG SEAPORT 3D DIGITAL TWIN - DYNAMIC OCEAN & HARBOR BASINS
-// High-fidelity maritime water surface:
-// - Vibrant deep oceanic sapphire & tropical harbor turquoise depth
-// - Dual-scrolling procedural wave normal maps for surface chop
-// - Quayside caisson wave break & hull waterline foam skirts
-// - Physically accurate dielectric Fresnel reflections & sun glints
-// - Day/Twilight/Night ambient responsiveness (never pitch-black)
+// HIPG SEAPORT 3D DIGITAL TWIN - AUTHENTIC DYNAMIC HARBOR BASIN
+// Accurately sculpted to Sri Lanka Hambantota Port Satellite Map:
+// - Inner North Basin (Between North Quay and Central Yard Berths 06-04)
+// - Inner East Basin (Turning basin along Eastern Berths 01-02)
+// - Southern Harbor Entrance Channel (Running South between coastal spits)
+// - Open Indian Ocean (Vast oceanic depth South of the Breakwaters)
+// - Karagan Lewaya Lagoon (North-East shallow wetland water)
+// - Rotala Wewa Inland Lake (West Mirijjawila wetland)
 // ============================================================
 
 import React, { useRef, useMemo } from 'react';
@@ -29,7 +30,7 @@ export function RealisticWater() {
   const waveOffsetRef1 = useRef(0);
   const waveOffsetRef2 = useRef(0);
 
-  // Animate dynamic ocean swells and wave chop
+  // Dynamic ocean swell & wave animations
   useFrame((_, delta) => {
     waveOffsetRef1.current += delta * 0.035;
     waveOffsetRef2.current -= delta * 0.022;
@@ -42,23 +43,23 @@ export function RealisticWater() {
     }
   });
 
-  // Adaptive maritime lighting & water body colors
   const isDay = timeOfDay === 'day';
   const isNight = timeOfDay === 'night';
 
-  const oceanDeepColor = isDay ? '#0e4a75' : isNight ? '#08253d' : '#0b3d64';
-  const basinColor = isDay ? '#10638b' : isNight ? '#0b3554' : '#0e557b';
-  const emissiveColor = isDay ? '#072b44' : isNight ? '#041728' : '#052238';
+  const oceanDeepColor = isDay ? '#0a3f66' : isNight ? '#072036' : '#083354';
+  const basinColor = isDay ? '#0e557b' : isNight ? '#092d47' : '#0b4566';
+  const lagoonColor = isDay ? '#114a60' : isNight ? '#0a2e3d' : '#0e3e52';
+  const emissiveColor = isDay ? '#052338' : isNight ? '#031422' : '#041c2e';
 
   return (
     <group position={[0, 0.015, 0]} name="Dynamic_Harbor_Waters">
-      {/* ── 1. Expansive Indian Ocean Surface (South & East towards Horizon) ── */}
+      {/* ── 1. Expansive Indian Ocean (South of the Breakwaters extending to Horizon) ── */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[worldX(1500), -0.01, worldZ(1600)]}
+        position={[worldX(1100), -0.01, worldZ(2500)]}
         receiveShadow
       >
-        <planeGeometry args={[3000, 3000, 32, 32]} />
+        <planeGeometry args={[3600, 1500, 32, 24]} />
         <meshStandardMaterial
           color={oceanDeepColor}
           emissive={emissiveColor}
@@ -68,17 +69,17 @@ export function RealisticWater() {
           normalMap={normalMap1}
           normalScale={new THREE.Vector2(0.35, 0.35)}
           transparent
-          opacity={0.96}
+          opacity={0.97}
         />
       </mesh>
 
-      {/* ── 2. North Basin Channel (Along Berths 09, 10, 11) ── */}
+      {/* ── 2. North Basin (Between North Quay Berths 09-11 and Central Yard Berths 06-04) ── */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[worldX(535), 0.005, worldZ(300)]}
+        position={[worldX(660), 0.005, worldZ(348)]}
         receiveShadow
       >
-        <planeGeometry args={[worldW(880), worldD(150)]} />
+        <planeGeometry args={[worldW(960), worldD(185)]} />
         <meshStandardMaterial
           color={basinColor}
           emissive={emissiveColor}
@@ -92,33 +93,13 @@ export function RealisticWater() {
         />
       </mesh>
 
-      {/* ── 3. Central Basin Channel (Between Berths 06-04 and Central Basin) ── */}
+      {/* ── 3. East Basin / Turning Basin (Along Eastern Berths 01 & 02) ── */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[worldX(570), 0.005, worldZ(390)]}
+        position={[worldX(1120), 0.005, worldZ(600)]}
         receiveShadow
       >
-        <planeGeometry args={[worldW(720), worldD(110)]} />
-        <meshStandardMaterial
-          color={basinColor}
-          emissive={emissiveColor}
-          emissiveIntensity={0.8}
-          roughness={0.06}
-          metalness={0.06}
-          normalMap={normalMap1}
-          normalScale={new THREE.Vector2(0.35, 0.35)}
-          transparent
-          opacity={0.97}
-        />
-      </mesh>
-
-      {/* ── 4. Eastern Deep-Sea Channel & Open Ocean (East of Berths 01 & 02) ── */}
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[worldX(1258), 0.005, worldZ(690)]}
-        receiveShadow
-      >
-        <planeGeometry args={[worldW(600), worldD(800)]} />
+        <planeGeometry args={[worldW(324), worldD(460)]} />
         <meshStandardMaterial
           color={basinColor}
           emissive={emissiveColor}
@@ -132,13 +113,13 @@ export function RealisticWater() {
         />
       </mesh>
 
-      {/* ── 5. Harbor Entrance Fairway Channel (Between Breakwaters into Indian Ocean) ── */}
+      {/* ── 4. Southern Entrance Channel (Leading South between the Two Coastal Spits) ── */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
-        position={[worldX(960), 0.005, worldZ(1200)]}
+        position={[worldX(1120), 0.005, worldZ(1300)]}
         receiveShadow
       >
-        <planeGeometry args={[worldW(340), worldD(460)]} />
+        <planeGeometry args={[worldW(324), worldD(940)]} />
         <meshStandardMaterial
           color={basinColor}
           emissive={emissiveColor}
@@ -152,7 +133,47 @@ export function RealisticWater() {
         />
       </mesh>
 
-      {/* ── 5. Quayside Wave-Break Foam Skirts (Where waves lap against concrete caissons) ── */}
+      {/* ── 5. Karagan Lewaya Shallow Lagoon (North-East of the Port Basin) ── */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[worldX(1550), 0.003, worldZ(320)]}
+        receiveShadow
+      >
+        <planeGeometry args={[worldW(600), worldD(450)]} />
+        <meshStandardMaterial
+          color={lagoonColor}
+          emissive={emissiveColor}
+          emissiveIntensity={0.5}
+          roughness={0.12}
+          metalness={0.04}
+          normalMap={normalMap2}
+          normalScale={new THREE.Vector2(0.2, 0.2)}
+          transparent
+          opacity={0.92}
+        />
+      </mesh>
+
+      {/* ── 6. Rotala Wewa Wetland Lake (West of Central Yard in Mirijjawila) ── */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[worldX(-120), 0.026, worldZ(580)]}
+        receiveShadow
+      >
+        <planeGeometry args={[worldW(180), worldD(220)]} />
+        <meshStandardMaterial
+          color={lagoonColor}
+          emissive={emissiveColor}
+          emissiveIntensity={0.5}
+          roughness={0.12}
+          metalness={0.04}
+          normalMap={normalMap1}
+          normalScale={new THREE.Vector2(0.2, 0.2)}
+          transparent
+          opacity={0.9}
+        />
+      </mesh>
+
+      {/* ── 7. Quayside Wave-Break Foam Skirts (Where waves lap against concrete caissons) ── */}
       {/* North Basin Foam Skirt */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
@@ -168,7 +189,7 @@ export function RealisticWater() {
         />
       </mesh>
 
-      {/* Central Basin South Quay Foam Skirt */}
+      {/* Central Basin South Quay Foam Skirt (Berths 06-04) */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[worldX(570), 0.012, worldZ(437)]}
