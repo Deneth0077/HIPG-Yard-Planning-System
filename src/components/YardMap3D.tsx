@@ -40,6 +40,7 @@ import {
 } from '@/components/RealisticPortElements';
 import { RealisticWater } from '@/components/RealisticWater';
 import { RealisticQuayCranes } from '@/components/RealisticQuayCranes';
+import { RealisticHambantotaEnvironment } from '@/components/RealisticHambantotaEnvironment';
 
 // Scale factor: 1000 map units -> 100 Three.js scene units
 const SCALE = 0.1;
@@ -991,6 +992,9 @@ export default function YardMap3D() {
 
           {/* Deep Navy Harbor Water */}
           <RealisticWater />
+
+          {/* Authentic Hambantota Regional Mainland & Breakwaters */}
+          <RealisticHambantotaEnvironment />
 
           {/* Weathered Port Ground & Asphalt */}
           <RealisticPortGround />

@@ -52,8 +52,12 @@ export function RealisticWater() {
 
   return (
     <group position={[0, 0.015, 0]} name="Dynamic_Harbor_Waters">
-      {/* ── 1. Expansive Indian Ocean Surface (Extending to Horizon) ── */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+      {/* ── 1. Expansive Indian Ocean Surface (South & East towards Horizon) ── */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[worldX(1500), -0.01, worldZ(1600)]}
+        receiveShadow
+      >
         <planeGeometry args={[3000, 3000, 32, 32]} />
         <meshStandardMaterial
           color={oceanDeepColor}
@@ -115,6 +119,26 @@ export function RealisticWater() {
         receiveShadow
       >
         <planeGeometry args={[worldW(600), worldD(800)]} />
+        <meshStandardMaterial
+          color={basinColor}
+          emissive={emissiveColor}
+          emissiveIntensity={0.85}
+          roughness={0.07}
+          metalness={0.06}
+          normalMap={normalMap1}
+          normalScale={new THREE.Vector2(0.35, 0.35)}
+          transparent
+          opacity={0.97}
+        />
+      </mesh>
+
+      {/* ── 5. Harbor Entrance Fairway Channel (Between Breakwaters into Indian Ocean) ── */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[worldX(960), 0.005, worldZ(1200)]}
+        receiveShadow
+      >
+        <planeGeometry args={[worldW(340), worldD(460)]} />
         <meshStandardMaterial
           color={basinColor}
           emissive={emissiveColor}

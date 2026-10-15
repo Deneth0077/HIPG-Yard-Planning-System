@@ -679,4 +679,185 @@ export function getGlovisFunnelTexture(): THREE.CanvasTexture {
   return texture;
 }
 
+/**
+ * Creates authentic Sri Lankan dry-zone coastal mainland terrain texture
+ * (Warm earthy savanna soil, coastal shrubbery, laterite ground variations).
+ */
+export function getMainlandTerrainTexture(): THREE.CanvasTexture {
+  const cacheKey = 'mainland_terrain';
+  if (textureCache.has(cacheKey)) return textureCache.get(cacheKey) as THREE.CanvasTexture;
+
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+
+  // Base Southern dry-zone scrubland green-brown
+  ctx.fillStyle = '#22301c';
+  ctx.fillRect(0, 0, size, size);
+
+  // Natural laterite reddish-brown soil patches
+  for (let i = 0; i < 24; i++) {
+    const rx = Math.random() * size;
+    const ry = Math.random() * size;
+    const rad = 25 + Math.random() * 55;
+    const grad = ctx.createRadialGradient(rx, ry, 5, rx, ry, rad);
+    grad.addColorStop(0, 'rgba(68, 52, 36, 0.65)');
+    grad.addColorStop(0.6, 'rgba(48, 56, 32, 0.4)');
+    grad.addColorStop(1, 'rgba(34, 48, 28, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(rx, ry, rad, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Dense coastal scrub & vegetation clumps
+  for (let i = 0; i < 60; i++) {
+    const rx = Math.random() * size;
+    const ry = Math.random() * size;
+    const rad = 10 + Math.random() * 22;
+    const grad = ctx.createRadialGradient(rx, ry, 2, rx, ry, rad);
+    grad.addColorStop(0, 'rgba(28, 42, 22, 0.85)');
+    grad.addColorStop(0.7, 'rgba(36, 52, 26, 0.4)');
+    grad.addColorStop(1, 'rgba(34, 48, 28, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(rx, ry, rad, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Micro-noise grain for natural earth texture
+  const imgData = ctx.getImageData(0, 0, size, size);
+  const data = imgData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const noise = (Math.random() - 0.5) * 18;
+    data[i] = Math.min(255, Math.max(0, data[i] + noise));
+    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise * 0.7));
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(12, 12);
+  textureCache.set(cacheKey, texture);
+  return texture;
+}
+
+/**
+ * Creates golden coastal beach sand texture with subtle wind ripples.
+ */
+export function getBeachSandTexture(): THREE.CanvasTexture {
+  const cacheKey = 'beach_sand';
+  if (textureCache.has(cacheKey)) return textureCache.get(cacheKey) as THREE.CanvasTexture;
+
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+
+  // Warm golden-tan coastal sand base
+  ctx.fillStyle = '#bfa577';
+  ctx.fillRect(0, 0, size, size);
+
+  // Subtle wind ripples
+  ctx.strokeStyle = 'rgba(155, 130, 92, 0.35)';
+  ctx.lineWidth = 6;
+  for (let y = 0; y < size; y += 18) {
+    ctx.beginPath();
+    ctx.moveTo(0, y + (Math.random() - 0.5) * 6);
+    ctx.bezierCurveTo(
+      size * 0.33,
+      y + 6 + (Math.random() - 0.5) * 4,
+      size * 0.66,
+      y - 4 + (Math.random() - 0.5) * 4,
+      size,
+      y + (Math.random() - 0.5) * 6
+    );
+    ctx.stroke();
+  }
+
+  // Fine sand grain specks
+  const imgData = ctx.getImageData(0, 0, size, size);
+  const data = imgData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const noise = (Math.random() - 0.5) * 22;
+    data[i] = Math.min(255, Math.max(0, data[i] + noise));
+    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise * 0.9));
+    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise * 0.7));
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(6, 6);
+  textureCache.set(cacheKey, texture);
+  return texture;
+}
+
+/**
+ * Creates rugged dark granite riprap rock armor texture for port breakwaters.
+ */
+export function getBreakwaterStoneTexture(): THREE.CanvasTexture {
+  const cacheKey = 'breakwater_stone';
+  if (textureCache.has(cacheKey)) return textureCache.get(cacheKey) as THREE.CanvasTexture;
+
+  const size = 512;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+
+  // Dark charcoal granite base
+  ctx.fillStyle = '#222831';
+  ctx.fillRect(0, 0, size, size);
+
+  // Individual interlocking rock boulder facets
+  for (let y = 0; y < size; y += 42) {
+    for (let x = 0; x < size; x += 42) {
+      const offsetX = (Math.random() - 0.5) * 16;
+      const offsetY = (Math.random() - 0.5) * 16;
+      const shade = Math.floor(28 + Math.random() * 32);
+      ctx.fillStyle = `rgb(${shade}, ${shade + 3}, ${shade + 8})`;
+      ctx.beginPath();
+      ctx.moveTo(x + offsetX, y + offsetY);
+      ctx.lineTo(x + 36 + offsetX, y + (Math.random() - 0.5) * 8 + offsetY);
+      ctx.lineTo(x + 40 + offsetX, y + 38 + offsetY);
+      ctx.lineTo(x + (Math.random() - 0.5) * 8 + offsetX, y + 42 + offsetY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Rock edge highlight
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.25)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+  }
+
+  // Salt crust & sea spray weathering
+  for (let i = 0; i < 40; i++) {
+    const rx = Math.random() * size;
+    const ry = Math.random() * size;
+    const grad = ctx.createRadialGradient(rx, ry, 1, rx, ry, 10 + Math.random() * 14);
+    grad.addColorStop(0, 'rgba(148, 163, 184, 0.35)');
+    grad.addColorStop(1, 'rgba(148, 163, 184, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(rx, ry, 14, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(4, 4);
+  textureCache.set(cacheKey, texture);
+  return texture;
+}
+
+
 
